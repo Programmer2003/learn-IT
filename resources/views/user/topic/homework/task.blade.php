@@ -3,9 +3,7 @@
         <label class="form-label">Вы отправили файл</label>
         <h4 class="form-label">1.sql</h4>
         @if (auth()->user()->homeworkMark($topic->id))
-            {
             <h2>Оценка: {{ auth()->user()->homeworkMark($topic->id) }}</h2>
-            }
         @else
             <h2>Работа не проверена</h2>
         @endif

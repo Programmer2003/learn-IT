@@ -11,7 +11,7 @@ use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
+class TaskController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,132 +23,7 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        $topics = Topic::where('id', '<', auth()->user()->topic)->get();
-        return view('user.profile', compact('topics'));
-    }
-
-    public function course()
-    {
-        $topics = Topic::all();
-        return view('user.course', compact('topics'));
-    }
-
-    public function test(Topic $topic)
-    {
-        $user = auth()->user();
-        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->firstOrFail();
-        if ($user->topic < $progress->topic_id || $progress->task_number < 4) {
-            return back()->with('info', 'Пройдите задания');
-        }
-
-        $test = $progress->topic->getTest();
-        $status = $progress->test_status;
-        return view('user.topic.test.questions', compact('topic', 'test', 'status'));
-    }
-
-    public function testHelp(Topic $topic)
-    {
-        $user = auth()->user();
-        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
-        return view('user.topic.test.help.index', compact('progress', 'topic'));
-    }
-
-    public function endTest(Topic $topic)
-    {
-        $user = User::find(auth()->user()->id);
-        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
-        if ($progress->test_status == -2) {
-            // if($progress->tries >= 3){
-            //     $progress->update([
-            //         'test_status' => -2,
-            //     ]);
-            //     return back()->with('fail','Вы не смогли пройти тест');
-            // }
-
-            return back();
-        }
-
-        $progress->update([
-            'test_status' => $progress->tries > 3 ? -2 : -1,
-        ]);
-        $progress = $progress->fresh();
-
-        $user->update([
-            'points' => $user->points + $progress->test_points,
-            'topic' => $progress->topic_id + 1,
-        ]);
-
-        if ($user->fresh()->topic > 11) {
-            return back()->with('end', 'Поздравляем, вы прошли курс! Заберите сертификат в профиле');
-        }
-
-        return back()->with('next', 'Следующая тема');
-    }
-
-    public function testHelpCheck(Topic $topic, Request $request)
-    {
-        $user = auth()->user();
-        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
-
-        $answer = $topic->getHelpAnswer();
-        $reply = $request->answer;
-        if ($answer == $reply) {
-            return back()->with('success', 'Правильно');
-        } else {
-            return back()->with('error', 'Попробуйте еще раз');
-        }
-    }
-
-    public function testHelpCheckTest(Topic $topic, Request $request)
-    {
-        $user = auth()->user();
-        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
-        $progress = $progress->fresh();
-        $mistakes = 0;
-        $points = 0;
-        $replies = $request->input('answer');
-        $answers = $topic->getHelpTestTaskAnswers();
-
-        for ($index = 0; $index  < count($replies); $index++) {
-            $reply = $replies[$index];
-            $answer = $answers[$index]->data;
-            if ($reply != $answer) {
-                $mistakes++;
-            } else {
-                $points++;
-            }
-        }
-
-        if ($mistakes < 2) {
-            $progress->update([
-                'test_status' => 2,
-            ]);
-
-            return redirect(route('topic.test', $topic))->with('last', 'У вас последняя попытка пройти тест');
-        }
-        $progress->update([
-            'test_status' => -1,
-        ]);
-
-        return redirect(route('topic.test', $topic));
-    }
-
-    public function homework(Request $request)
-    {
-        $file = $request->file('file');
-        $path = $file->storeAs(auth()->user()->email . "/" . $request->topic, $file->getClientOriginalName());
-
-        return redirect()->back()->with('success', 'Файл загружен');
-    }
-
-    public function startTask(Request $request)
+    public function start()
     {
         $user = auth()->user();
         $progress = Progress::where('user_id', $user->id)->where('topic_id', $user->topic)->first();
@@ -178,7 +53,7 @@ class UserController extends Controller
         return view('user.topic.task.question', ['started' => true, 'task' => $task, 'task_number' => 1, 'timer' => $progress->fresh()->getTimer() ?? -1]);
     }
 
-    public function nextTask()
+    public function next()
     {
         $user = auth()->user();
         $progress = Progress::where('user_id', $user->id)->where('topic_id', $user->topic)->firstOrFail();
@@ -198,7 +73,7 @@ class UserController extends Controller
         return view('user.topic.task.question', ['started' => true, 'task' => $task, 'task_number' => $task_number, 'timer' => $progress->fresh()->getTimer() ?? -1]);
     }
 
-    public function checkTask(Request $request)
+    public function check(Request $request)
     {
         $answer = $request->answer;
         $user = auth()->user();
@@ -305,7 +180,7 @@ class UserController extends Controller
         ]);;
     }
 
-    public function additionalTaskCheck(Request $request)
+    public function additionalCheck(Request $request)
     {
         $answer =  $request->answerMore;
         $user = auth()->user();

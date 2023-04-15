@@ -16,11 +16,11 @@
         </div>
     </section>
     <!-- End Hero Section -->
-    @if ($status == -2)
-        <button class="t-btn">Перейти к следующей теме</button>
+    @if ($status < -1)
+        @include('user.topic.test.next-topic')
     @else
         @if ($status == -1)
-            <button class="t-btn">next</button>
+            <button class="t-btn">Перейти к следующей теме</button>
         @endif
         <form action="{{ route('test.check', $topic) }}" method="POST" class="p-3">
             @csrf
