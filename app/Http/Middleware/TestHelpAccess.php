@@ -2,19 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
+use App\Models\Progress;
 use Closure;
 use Illuminate\Http\Request;
 
-class TopicAccess
+class TestHelpAccess
 {
-    /**
-     * Where to redirect users when the intended url fails.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::COURSE;
-
     /**
      * Handle an incoming request.
      *
@@ -24,10 +17,17 @@ class TopicAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->topic->id <= auth()->user()->topic) {
-            return $next($request);
+        $user = auth()->user();
+        $topic = $request->topic;
+        if(!$topic){
+            return back();
         }
 
-        return redirect($this->redirectTo)->with('info', "Завершите предыдущие курсы.")->with('tab', $request->topic->id);
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->firstOrFail();
+        if ($progress->test_status != 1) {
+            return redirect(route('topic.test',$topic));
+        }
+
+        return $next($request);
     }
 }

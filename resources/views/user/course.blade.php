@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-    @if (Session::has('error'))
+    @if (Session::has('info'))
         <link rel="stylesheet" href="{{ asset('lib/toastr/dist/css/toastr.min.css') }}">
     @endif
 @endpush
@@ -43,7 +43,7 @@
                                     <div class="single-service-thumbnail d-flex justify-content-center">
                                         <img src="{{ $topic->url }}" alt="{{ $topic->name }}">
                                         <a class="t-btn" style="position: absolute; top: 0; right: 0;"
-                                            href="{{ route('topic', $topic->id) }}">Вперед</a>
+                                            href="{{ route('topic', $topic) }}">Вперед</a>
                                     </div>
                                     <div class="service-details-wrap">
                                         <h2 class="service-entry-title">{{ $topic->name }}</h2>
@@ -65,10 +65,10 @@
 @push('scripts')
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
-    @if (Session::has('error'))
+    @if (Session::has('info'))
         <script src="{{ asset('lib/toastr/dist/js/toastr.min.js') }}"></script>
         <script>
-            toastr.error("{!! Session::get('error') !!}");
+            toastr.info("{!! Session::get('info') !!}");
         </script>
     @endif
 @endpush

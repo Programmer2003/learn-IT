@@ -50,7 +50,7 @@
                         <p>Закрепленные темы</p>
                         @if ($topics->count())
                             @foreach ($topics as $topic)
-                                <a href=""> {{ $topic->name }}</a><br />
+                                <a href="{{ route('topic', $topic) }}"> {{ $topic->name }}</a><br />
                             @endforeach
                         @else
                             <a class="" href="{{route('course')}}">Начните учить!</a>

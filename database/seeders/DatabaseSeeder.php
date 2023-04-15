@@ -232,10 +232,203 @@ class DatabaseSeeder extends Seeder
         $answers = json_encode($answers);
         $tasksMore = json_encode($tasksMore);
         $answersMore = json_encode($answersMore);
+        
+        $test = [
+            '0' => [
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'test 1',
+                    'choises' => [
+                        '1',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'test 2',
+                    'choises' => [
+                        '7',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'test 3',
+                    'choises' => [
+                        '6',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'test 4',
+                    'choises' => [
+                        '5',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+            ],
+            '1' => [
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'hard test 1',
+                    'choises' => [
+                        '5',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'hard test 2',
+                    'choises' => [
+                        '5',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'hard test 3',
+                    'choises' => [
+                        '5',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+                [
+                    'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                    'text' => 'hard test 4',
+                    'choises' => [
+                        '5',
+                        '2',
+                        '3',
+                        '4',
+                    ],
+                ],
+            ]
+        ];
+
+        $test_ans = [
+            '0' => [
+                [
+                    'data' => '1'
+                ],
+                [
+                    'data' => '2'
+                ],
+                [
+                    'data' => '3'
+                ],
+                [
+                    'data' => '1'
+                ],
+            ],
+            '1' => [
+                [
+                    'data' => '1'
+                ],
+                [
+                    'data' => '1'
+                ],
+                [
+                    'data' => '1'
+                ],
+                [
+                    'data' => '1'
+                ],
+            ]
+        ];
+        $test = json_encode($test);
+        $test_ans = json_encode($test_ans);
+
+        $test_help_question = [
+            'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+            'text' => 'test 1',
+        ];
+        $test_help_answer = [
+            'data' => '2',
+        ];
+        $test_help_question = json_encode($test_help_question);
+        $test_help_answer = json_encode($test_help_answer);
+        
+        $test_help_t_questions = [
+            [
+                'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                'text' => 'Тест help 1',
+                'choises' => [
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                ],
+            ],
+            [
+                'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                'text' => 'Тест help 2',
+                'choises' => [
+                    '7',
+                    '2',
+                    '3',
+                    '4',
+                ],
+            ],
+            [
+                'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                'text' => 'Тест help 3',
+                'choises' => [
+                    '6',
+                    '2',
+                    '3',
+                    '4',
+                ],
+            ],
+            [
+                'url' => 'https://s.wsj.net/public/resources/images/OG-BS302_201809_M_20180904103731.gif',
+                'text' => 'test 4',
+                'choises' => [
+                    '5',
+                    '2',
+                    '3',
+                    '4',
+                ],
+            ],
+        ];
+
+        $test_help_t_answers = [
+            [
+                'data' => '1'
+            ],
+            [
+                'data' => '2'
+            ],
+            [
+                'data' => '3'
+            ],
+            [
+                'data' => '1'
+            ],
+        ];
+
+        $test_help_t_questions = json_encode($test_help_t_questions);
+        $test_help_t_answers = json_encode($test_help_t_answers);
+
         $topics =
             [
                 [
                     'name' => 'Знакомство с HTML и CSS',
+                    'slug'=> 'html_and_css',
                     'url' => 'https://thumb.tildacdn.com/tild3963-6661-4533-b135-363265626237/-/resize/740x/-/format/webp/HTML.png',
                     'description' => 'The Construction Services department is responsible for managing the development and execution of new construction',
                     'full_description' => '<p>"Знакомство с HTML и CSS" - это тема, которая знакомит начинающих программистов с основными принципами создания веб-страниц. HTML (HyperText Markup Language) является стандартным языком разметки веб-страниц, который используется для создания структуры и содержания страницы, в то время как CSS (Cascading Style Sheets) используется для оформления и стилизации этих страниц. </p>
@@ -249,9 +442,17 @@ class DatabaseSeeder extends Seeder
                     'answers' => $answers,
                     'tasks_more' => $tasksMore,
                     'answers_more' => $answersMore,
+                    'test_questions' => $test,
+                    'test_answers' => $test_ans,
+                    'test_help' => 'Текст для теории по доп. подготовки',
+                    'test_help_question' => $test_help_question,
+                    'test_help_answer' => $test_help_answer,
+                    'test_help_t_questions' => $test_help_t_questions,
+                    'test_help_t_answers' => $test_help_t_answers,
                 ],
                 [
                     'name' => 'Div-элементы, header сайта',
+                    'slug'=> 'div_and_header',
                     'url' => 'https://cdn.pixabay.com/photo/2016/11/11/14/49/minecraft-1816996_960_720.png',
                     'description' => '',
                     'full_description' => '<p>Div-элементы и header сайта - это важные компоненты веб-дизайна, которые помогают создавать эффективные и привлекательные сайты.</p>
@@ -262,6 +463,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Секции, обёртка секций',
+                    'slug'=> 'sections',
                     'url' => 'https://image.spreadshirtmedia.net/image-server/v1/designs/186505609,width=178,height=178.png',
                     'description' => '',
                     'full_description' => '<p>Секции - это отдельные блоки на веб-странице, которые содержат определенный контент. Они могут быть использованы для разделения страницы на логические части или для улучшения внешнего вида и удобства использования. </p>
@@ -272,6 +474,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Секция навыков, псевдоэлементы',
+                    'slug'=> 'pseudo-elements',
                     'url' => 'https://media.tproger.ru/uploads/2020/03/layers-icon-new-cover-icon-original.png',
                     'description' => '',
                     'full_description' => '<p>Секция навыков и псевдоэлементы - это важные компоненты веб-дизайна, которые помогают создавать привлекательные и информативные сайты. Секция навыков используется для представления навыков и компетенций, которыми обладает автор или компания. Она может содержать графики, диаграммы и другие элементы, которые показывают уровень владения определенными навыками. </p>
@@ -282,6 +485,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Секция процессов, видео',
+                    'slug'=> 'process_and_video',
                     'url' => 'https://cdn-icons-png.flaticon.com/512/4404/4404094.png',
                     'description' => '',
                     'full_description' => '<p>Секция процессов и видео - это важные элементы веб-дизайна, которые помогают создавать информативные и привлекательные сайты. </p>
@@ -293,6 +497,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Секция формы, поля ввода, кнопки',
+                    'slug'=> 'forms',
                     'url' => 'https://docs.sweetsystems.se/en/4.8.5/_images/form8.png',
                     'description' => '',
                     'full_description' => '<p>Секция формы, поля ввода и кнопки - это важные компоненты веб-дизайна, которые используются для создания интерактивных элементов на сайте. Секция формы представляет собой блок, в котором размещаются поля для ввода информации, а также кнопка отправки данных. Поля ввода могут быть различных типов, например, текстовые поля, поля для выбора даты или времени, чекбоксы и радиокнопки. Кнопка отправки данных позволяет пользователю отправить заполненную форму на сервер. </p>
@@ -303,6 +508,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Секция галереи, JQuery',
+                    'slug'=> 'gallery_and_jquery',
                     'url' => 'https://i.stack.imgur.com/ggwZD.png',
                     'description' => '',
                     'full_description' => '<p>Секция галереи и JQuery - это важные элементы веб-дизайна, которые помогают создавать красивые и интерактивные сайты. Секция галереи используется для представления изображений и фотографий, которые могут быть связаны с темой сайта. Она может содержать слайдеры, карусели и другие элементы, которые помогают пользователям лучше ознакомиться с контентом сайта. </p>
@@ -313,6 +519,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Основы JavaScript',
+                    'slug'=> 'java-script',
                     'url' => 'https://cdn.coursehunter.net/category/javascript.png',
                     'description' => '',
                     'full_description' => '<p>Основы JavaScript - это тема, которая знакомит начинающих программистов с основами языка программирования JavaScript. JavaScript является одним из самых популярных языков программирования, который используется для создания интерактивных и динамических веб-сайтов. </p>
@@ -323,6 +530,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Всплывающая форма',
+                    'slug'=> 'popups',
                     'url' => 'https://raw.githubusercontent.com/johnhenry/node-popup/HEAD/docs/alert.png',
                     'description' => '',
                     'full_description' => '<p>Всплывающая форма - это элемент веб-дизайна, который используется для сбора информации от пользователей. Она может появляться на странице сайта после нажатия на определенную кнопку или ссылку, либо автоматически через определенный промежуток времени. </p>
@@ -333,6 +541,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Анимация',
+                    'slug'=> 'animation',
                     'url' => 'https://res.cloudinary.com/practicaldev/image/fetch/s--R3JbGlUM--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://cdn-images-1.medium.com/max/800/0%2A5Ky7VV0gTNcl0koU.png',
                     'description' => '',
                     'full_description' => '<p>Анимация - это процесс создания движущихся элементов на веб-страницах. Анимация может быть использована для улучшения пользовательского опыта, привлечения внимания к ключевым элементам, подчеркивания важности информации и многого другого. </p>
@@ -344,6 +553,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => 'Доработка сайта, кликабельное меню и footer',
+                    'slug'=> 'final_preparations',
                     'url' => 'https://res.cloudinary.com/practicaldev/image/fetch/s--HqnM3chU--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g167l47m45sq1za89905.png',
                     'description' => '',
                     'full_description' => '<p>Эта тема ознакомит с основными принципами дизайна и разработки веб-сайтов. В рамках этой темы рассматриваются способы улучшения пользовательского опыта на сайте, добавления новых функций и улучшения внешнего вида. </p>

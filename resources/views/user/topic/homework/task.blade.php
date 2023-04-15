@@ -2,7 +2,13 @@
     <div class="mb-3 d-flex align-items-center flex-column ">
         <label class="form-label">Вы отправили файл</label>
         <h4 class="form-label">1.sql</h4>
-        <h2>Оценка: {{ auth()->user()->homeworkMark($topic->id) }}</h2>
+        @if (auth()->user()->homeworkMark($topic->id))
+            {
+            <h2>Оценка: {{ auth()->user()->homeworkMark($topic->id) }}</h2>
+            }
+        @else
+            <h2>Работа не проверена</h2>
+        @endif
     </div>
 @else
     <form enctype="multipart/form-data" id="sendHomework" action="{{ route('homework') }}" method="post" class="mb-3">

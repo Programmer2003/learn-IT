@@ -134,4 +134,10 @@ class User extends Authenticatable
     {
         return round(($this->topic - 1) / Topic::all()->count() * 100);
     }
+
+    public function getTopic()
+    {
+        return $this->belongsTo(Topic::class);
+    }
+
 }

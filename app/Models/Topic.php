@@ -23,9 +23,10 @@ class Topic extends Model
             'url' => $task[$hard]->url,
             'text' => $task[$hard]->text,
             'type' => $task[$hard]->type,
-            'choises' => $answer[$hard]->choises ?? '',
+            'choises' => $answer[$hard]->choises,
             'answer' => $answer[$hard]->data,
         );
+
         return $result;
     }
 
@@ -59,5 +60,40 @@ class Topic extends Model
     {
         $hard = auth()->user()->hard;
         return json_decode($this->answers_more)[$task_number - 1][$hard]->data;
+    }
+
+    public function getTestTasks(){
+        return json_decode($this->test_questions);
+    }
+
+    public function getTestAnswers(){
+        $hard = auth()->user()->hard;
+        return json_decode($this->test_answers)[$hard];
+    }
+
+    public function getTest()
+    {
+        $tasks = $this->getTestTasks();
+        $hard = auth()->user()->hard;
+        $test = (object) array(
+            'tasks' => $tasks[$hard],
+        );
+        return $test;
+    }
+
+    public function getHelpTask(){
+        return json_decode($this->test_help_question);
+    }
+
+    public function getHelpAnswer()
+    {
+        return json_decode($this->test_help_answer)->data;
+    }
+
+    public function getHelpTestTask(){
+        return json_decode($this->test_help_t_questions);
+    }
+    public function getHelpTestTaskAnswers(){
+        return json_decode($this->test_help_t_answers);
     }
 }

@@ -10,4 +10,4 @@
             {{ $text }}
         @endif
     </div>
-</div><!-- .single-accordian -->
+</div>

@@ -42,8 +42,196 @@ class UserController extends Controller
 
     public function topic(Topic $topic)
     {
-        $progress = Progress::where('user_id', auth()->user()->id)->where('topic_id', $topic->id)->first() ?? (object) array('task_end_at' => null);
-        return view('user.topic', compact('topic', 'progress'));
+        $user = auth()->user();
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+        if (!$progress) {
+            $progress = Progress::create([
+                'user_id' => $user->id,
+                'topic_id' => $user->topic,
+            ]);
+        }
+
+        return view('user.topic.index', compact('topic', 'progress'));
+    }
+
+    public function test(Topic $topic)
+    {
+        $user = auth()->user();
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->firstOrFail();
+        if ($user->topic < $progress->topic_id || $progress->task_number < 4) {
+            return back()->with('info', 'Пройдите задания');
+        }
+
+        $test = $progress->topic->getTest();
+        $status = $progress->test_status;
+        return view('user.topic.test.questions', compact('topic', 'test', 'status'));
+    }
+
+    public function testHelp(Topic $topic)
+    {
+        $user = auth()->user();
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+        return view('user.topic.test.help.index', compact('progress', 'topic'));
+    }
+
+    public function testCheck(Topic $topic, Request $request)
+    {
+        $user = auth()->user();
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+        if ($progress->test_status < 0) {
+            return back();
+        }
+
+        $progress->update([
+            'tries' => $progress->tries + 1,
+        ]);
+        $progress = $progress->fresh();
+        $mistakes = 0;
+        $points = 0;
+        $replies = $request->input('answer');
+        $answers = $topic->getTestAnswers();
+        for ($index = 0; $index  < count($replies); $index++) {
+            $reply = $replies[$index];
+            $answer = $answers[$index]->data;
+            if ($reply != $answer) {
+                $mistakes++;
+            } else {
+                $points++;
+            }
+        }
+
+        if ($mistakes == 0) {
+            $progress->update([
+                'test_points' => $points,
+                'test_status' => -2,
+            ]);
+        } else if ($mistakes < 2) {
+            $progress->update([
+                'test_points' => $points,
+                'test_status' => -1,
+            ]);
+        }
+        if ($progress->tries >= 3) {
+            $progress->update([
+                'test_status' => 1,
+            ]);
+            return redirect(route('test.help', $topic));
+        }
+
+        return back()->with('info', 'Попробуйте еще раз');
+        // if ($mistakes == 0) {
+        //     $progress->update([
+        //         'test_points' => $points,
+        //         'tries' => 4,
+        //     ]);
+
+        //     return $this->endTest($topic);
+        // }
+
+        // if ($mistakes < 2) {
+        //     $progress->update([
+        //         'test_points' => max($progress->points, $points),
+        //     ]);
+        //     $progress = $progress->fresh();
+        // }
+
+        // if ($progress->tries >= 3 || $progress->test_status == 2) {
+        //     if ($progress->test_points > 0) {
+        //         return $this->endTest($topic);
+        //     }
+
+        //     if ($progress->test_status == 2) {
+        //         return $this->endTest($topic);
+        //     }
+
+        //     $progress->update([
+        //         'test_status' => 1,
+        //     ]);
+
+        //     return redirect(route('test.help', $topic));
+        // }
+
+        // return back()->with('info', 'Попробуйте еще раз');
+    }
+
+    public function endTest(Topic $topic)
+    {
+        $user = User::find(auth()->user()->id);
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+        if ($progress->test_status == -2) {
+            // if($progress->tries >= 3){
+            //     $progress->update([
+            //         'test_status' => -2,
+            //     ]);
+            //     return back()->with('fail','Вы не смогли пройти тест');
+            // }
+
+            return back();
+        }
+
+        $progress->update([
+            'test_status' => $progress->tries > 3 ? -2 : -1,
+        ]);
+        $progress = $progress->fresh();
+
+        $user->update([
+            'points' => $user->points + $progress->test_points,
+            'topic' => $progress->topic_id + 1,
+        ]);
+
+        if ($user->fresh()->topic > 11) {
+            return back()->with('end', 'Поздравляем, вы прошли курс! Заберите сертификат в профиле');
+        }
+
+        return back()->with('next', 'Следующая тема');
+    }
+
+    public function testHelpCheck(Topic $topic, Request $request)
+    {
+        $user = auth()->user();
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+
+        $answer = $topic->getHelpAnswer();
+        $reply = $request->answer;
+        if ($answer == $reply) {
+            return back()->with('success', 'Правильно');
+        } else {
+            return back()->with('error', 'Попробуйте еще раз');
+        }
+    }
+
+    public function testHelpCheckTest(Topic $topic, Request $request)
+    {
+        $user = auth()->user();
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+        $progress = $progress->fresh();
+        $mistakes = 0;
+        $points = 0;
+        $replies = $request->input('answer');
+        $answers = $topic->getHelpTestTaskAnswers();
+
+        for ($index = 0; $index  < count($replies); $index++) {
+            $reply = $replies[$index];
+            $answer = $answers[$index]->data;
+            if ($reply != $answer) {
+                $mistakes++;
+            } else {
+                $points++;
+            }
+        }
+
+        if ($mistakes < 2) {
+            $progress->update([
+                'test_status' => 2,
+            ]);
+
+            return redirect(route('topic.test', $topic))->with('last', 'У вас последняя попытка пройти тест');
+        }
+        $progress->update([
+            'test_status' => -1,
+        ]);
+
+        return redirect(route('topic.test', $topic));
     }
 
     public function homework(Request $request)
@@ -67,7 +255,7 @@ class UserController extends Controller
                 ]);
 
                 $task = $progress->topic->getTask(1);
-                return view('user.task', ['started' => true, 'task' => $task, 'task_number' => 1, 'timer' => $progress->fresh()->getTimer() ?? -1]);
+                return view('user.topic.task.question', ['started' => true, 'task' => $task, 'task_number' => 1, 'timer' => $progress->fresh()->getTimer() ?? -1]);
             }
 
             return false;
@@ -76,13 +264,12 @@ class UserController extends Controller
         $progress = Progress::create([
             'user_id' => $user->id,
             'topic_id' => $user->topic,
-            'task_end_at' => Carbon::now()->addMinutes(6),
+            'task_end_at' => Carbon::now()->addMinutes($user->hard == 0 ? 5 : 7),
             'task_number' => 1,
         ]);
 
         $task = $progress->topic->getTask(1);
-        dd($progress->getTimer() ?? -1);
-        return view('user.task', ['started' => true, 'task' => $task, 'task_number' => 1, 'timer' => $progress->fresh()->getTimer() ?? -1]);
+        return view('user.topic.task.question', ['started' => true, 'task' => $task, 'task_number' => 1, 'timer' => $progress->fresh()->getTimer() ?? -1]);
     }
 
     public function nextTask()
@@ -92,7 +279,7 @@ class UserController extends Controller
         $task_number = $progress->task_number + 1;
 
         $progress->update([
-            'task_end_at' => Carbon::now()->addMinutes(6),
+            'task_end_at' => Carbon::now()->addMinutes($user->hard == 0 ? 5 : 7),
             'task_number' => $task_number,
             'mistakes' => 0,
         ]);
@@ -102,7 +289,7 @@ class UserController extends Controller
         }
 
         $task = $progress->topic->getTask($task_number);
-        return view('user.task', ['started' => true, 'task' => $task, 'task_number' => $task_number, 'timer' => $progress->fresh()->getTimer() ?? -1]);
+        return view('user.topic.task.question', ['started' => true, 'task' => $task, 'task_number' => $task_number, 'timer' => $progress->fresh()->getTimer() ?? -1]);
     }
 
     public function checkTask(Request $request)

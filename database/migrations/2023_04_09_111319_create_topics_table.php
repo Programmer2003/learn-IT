@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('description');
             $table->text('full_description')->nullable();
             $table->text('url');
@@ -30,6 +31,11 @@ return new class extends Migration
             $table->text('answers_more')->nullable();
             $table->text('test_questions')->nullable();
             $table->text('test_answers')->nullable();
+            $table->text('test_help')->nullable();
+            $table->text('test_help_question')->nullable();
+            $table->text('test_help_answer')->nullable();
+            $table->text('test_help_t_questions')->nullable();
+            $table->text('test_help_t_answers')->nullable();
             $table->timestamps();
         });
     }

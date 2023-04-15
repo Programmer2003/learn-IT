@@ -22,7 +22,9 @@ return new class extends Migration
             $table->integer('task_number')->default(0);
             $table->integer('mistakes')->default(0);
             $table->timestamp('test_end_at')->nullable();
-            $table->timestamp('test_mistakes')->nullable();
+            $table->smallInteger('tries')->default(0);
+            $table->smallInteger('test_status')->default(0);
+            $table->smallInteger('test_points')->default(0);
             $table->timestamps();
 
             $table->index('user_id', 'progress_user_idx');

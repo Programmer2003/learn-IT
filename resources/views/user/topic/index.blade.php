@@ -21,103 +21,31 @@
     <section class="single-service section">
         <div class="container">
             <ul class="nav nav-tabs" id="nav-tabs">
-                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#lecture">Лекция</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#task">Задания</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#lecture">Лекция</a></li>
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#task">Задания</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#homework">ДЗ</a></li>
                 <li class="nav-item"><a id="test-tab" data-toggle="tab" href="#test"
-                        class="nav-link {{ $progress->task_number ?? 0 > 3 ? '' : 'disabled' }}">Тест</a>
+                        class="nav-link {{ $progress->task_number > 3 ? '' : 'disabled' }}">Тест</a>
                 </li>
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#check-list">Чеклист</a></li>
+                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#check-list">Чеклист</a></li>
             </ul>
             <div class="tab-content">
                 <div id="lecture" class="tab-pane fade "><br>
-                    <div class="col-lg-6" style="max-width: 100% ">
-                        <div class="accordian-wrapper">
-                            @include('user.lecture-slide', [
-                                'caption' => 'Лекция',
-                                'text' => $topic->lecture_text,
-                            ])
-                            @include('user.lecture-slide', [
-                                'caption' => 'Презентация к лекции (ссылка)',
-                                'text' => $topic->lecture_link,
-                                'link' => true,
-                            ])
-                            @include('user.lecture-slide', [
-                                'caption' => 'Подключение к конференции (ссылка)',
-                                'text' => $topic->lecture_meet_link,
-                                'link' => true,
-                            ])
-                        </div>
-                    </div><!-- .col -->
+                    @include('user.topic.lecture.index',compact('topic'))
                 </div>
-                <div id="task" class="tab-pane fade"><br>
-                    <div class="single-service-details">
-
-                        <div class="service-details-wrap">
-                            <div class="d-flex justify-content-between">
-                                <h2 class="service-entry-title">Самостоятельное Задание</h2>
-                                <div id="timer" style="font-size:30px"></div>
-                            </div>
-                            <div class="service-entry-content" id="task_text">
-                                @include('user.task', [
-                                    'started' => $progress->task_end_at ? true : false,
-                                    'task_number' => $progress->task_number,
-                                    'task' => $progress->topic->getTask($progress->task_number),
-                                    'timer' => $progress->getTimer() ?? -1,
-                                ])
-                            </div>
-                        </div>
-
-                    </div><!-- .single-service-details -->
-
+                <div id="task" class="tab-pane fade show active"><br>
+                    @include('user.topic.task.index',compact('progress'))
                 </div>
                 <div id="homework" class="tab-pane fade "><br>
-                    <div class="single-service-details">
-
-                        <div class="service-details-wrap">
-                            <h2 class="service-entry-title">Домашнее Задание</h2>
-                            <div class="service-entry-content">
-                                <p>
-                                    {{ $topic->homework }}
-                                </p>
-                            </div>
-                        </div>
-                        @if ($topic->homework_img)
-                            <div class="single-service-thumbnail">
-                                <img src="{{ $topic->homework_img }}" alt="{{ $topic->homework_img }}">
-                            </div>
-                        @endif
-                    </div><!-- .single-service-details -->
-                    @include('user.homework', [
-                        'uploaded' => auth()->user()->fileUploaded($topic->id),
-                    ])
+                    @include('user.topic.homework.index',compact('topic'))
                 </div>
                 <div id="test" class="tab-pane fade "><br>
-                    <div class="single-service-details">
-                        <div class="single-service-thumbnail"><img src="img/service/single-service/04.jpg" alt="Image">
-                        </div>
-                        <div class="service-details-wrap">
-                            <h2 class="service-entry-title">Title Of Painting Service</h2>
-                            <div class="service-entry-content">
-                                <p>As am hastily invited settled at limited civilly fortune me. Really spring in extent an
-                                    by. Judge but built gay party world. Of so am he remember although required.</p>
-                                <p>Do am he horrible distance marriage so although. Afraid assure square so happen mr an
-                                    before. His many same been well can high that. Forfeited did law eagerness allowance
-                                    improving assurance bed.</p>
-                                <p>Had saw put seven joy short first. Pronounce so enjoyment my resembled in forfeited
-                                    sportsman. Which vexed did began son abode short may. Interested astonished he at
-                                    cultivated or me. Nor brought one invited she produce her. </p>
-                            </div>
-                        </div>
-                    </div><!-- .single-service-details -->
+                    @include('user.topic.test.index',compact('topic'))
                 </div>
-                <div id="check-list" class="tab-pane fade  show active"><br>
+                <div id="check-list" class="tab-pane fade "><br>
                     @include('user.checklist')
                 </div>
-
-
-
-            </div><!-- .tab-content -->
+            </div>
         </div>
     </section>
     <!-- End Single Service -->
@@ -126,6 +54,7 @@
 @push('scripts')
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
+    
     <script>
         function nextTask(e) {
             e.preventDefault();
@@ -147,6 +76,7 @@
                         document.getElementById('task_text').innerHTML = 'Отлично, переходите к тесту!';
                     } else {
                         document.getElementById('task_text').innerHTML = res;
+                        timer();
                     }
 
                 },
@@ -178,6 +108,7 @@
                             toastr.success('Правильно');
                             $('#check_button').hide();
                             $('#nextTask').show();
+                            clearInterval(countdownfunction);
                             break;
                         case 0:
                         case '0':
@@ -193,6 +124,7 @@
                             $('#check_button').hide();
                             $('#nextTask').show();
                             $('#additionalTask').show();
+                            clearInterval(countdownfunction);
                             break;
                         case 2:
                         case '2':
@@ -200,6 +132,7 @@
                             toastr.success('Правильно!');
                             $('#check_button').hide();
                             $('#nextTask').show();
+                            clearInterval(countdownfunction);
                             break;
                         case 3:
                         case '3':
@@ -207,6 +140,7 @@
                             toastr.success('Правильно!');
                             $('#check_button').hide();
                             $('#nextTask').show();
+                            clearInterval(countdownfunction);
                             break;
                         case 4:
                         case '4':
@@ -219,20 +153,17 @@
                         case '5':
                             console.log('открыть помощь, текст')
                             toastr.error('Неправильно');
-                            console.log($('#helpText'));
                             $('#helpText').text(result['text']);
                             break;
                         case 6:
                         case '6':
                             console.log('открыть помощь, изображение')
-                            console.log($('#helpImage'));
                             toastr.error('Неправильно');
                             $('#helpImage').attr("src", result['url']);
                             break;
                         case 7:
                         case '7':
                             console.log('0 баллов, Показать ответ')
-                            console.log($('#answer'));
                             toastr.error('Можно было лучше');
                             $('#answer').text(result['answer']);
                             break;
@@ -292,6 +223,7 @@
                     dataType: "html",
                     success: function(res) {
                         document.getElementById('task_text').innerHTML = res;
+                        timer();
                     },
                     error: function(data) {
                         console.log('error');
@@ -306,33 +238,45 @@
             toastr.success("{!! Session::get('success') !!}");
         </script>
     @endif
+    @if (Session::has('info'))
+        <script>
+            toastr.info("{!! Session::get('info') !!}");
+        </script>
+    @endif
     <script>
-        // Set the date we're counting down to
-        var countDownDate = new Date();
-        var seconds = parseInt($('#timerDate').text() || -1);
-        if (seconds == -1) {
-            document.getElementById("timer").style.display = 'none';
+        let countdownfunction;
+        timer();
+
+        function timer() {
+            var countDownDate = new Date();
+            var seconds = parseInt(document.getElementById('timerDate').value || -1);
+            countDownDate = countDownDate.setSeconds(countDownDate.getSeconds() +
+                seconds);
+
+            // Update the count down every 1 second
+            countdownfunction = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (
+                    1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Output the result in an element with id="demo"
+                document.getElementById("timer").innerHTML = minutes +
+                    "m " + seconds + "s ";
+                // If the count down is over, write some text 
+                if (distance < 0) {
+                    clearInterval(countdownfunction);
+
+                    document.getElementById("timer").innerHTML = "0m 0s";
+                    document.getElementById("timer").style.color = 'red';
+                }
+                else{
+                    document.getElementById("timer").style.color = 'green';
+                }
+            }, 1000);
         }
-        countDownDate = countDownDate.setSeconds(countDownDate.getSeconds() + seconds);
-
-        // Update the count down every 1 second
-        var countdownfunction = setInterval(function() {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the result in an element with id="demo"
-            document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
-
-            // If the count down is over, write some text 
-            if (distance < 0) {
-                clearInterval(countdownfunction);
-                document.getElementById("timer").innerHTML = "0m 0s";
-                document.getElementById("timer").style.color = 'red';
-            }
-        }, 1000);
     </script>
 @endpush
