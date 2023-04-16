@@ -31,9 +31,16 @@ class TestController extends Controller
             return back()->with('info', 'Пройдите задания');
         }
 
+        if (!$progress->test_end_at) {
+            $progress->update([
+                'test_end_at' => Carbon::now()->addMinutes(20),
+            ]);
+        }
+
         $test = $progress->topic->getTest();
         $status = $progress->test_status;
-        return view('user.topic.test.questions', compact('topic', 'test', 'status'));
+        $timer =  $progress->fresh()->getTestTimer();
+        return view('user.topic.test.questions', compact('topic', 'test', 'status', 'timer'));
     }
 
     public function check(Topic $topic, Request $request)

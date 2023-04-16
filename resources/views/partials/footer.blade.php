@@ -3,13 +3,19 @@
     <div class="site-footer-in">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg col-md-6">
                     <div class="footer-widget">
                         <h2 class="footer-widget-title">О нас</h2>
                         <div class="short-description">Описание про нас</div>
+                        <div class="social-btn">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
+                          </div>
                     </div>
-                </div><!-- .col -->
-                <div class="col-lg-3 col-md-6">
+                </div>
+                <div class="col-lg col-md-6">
                     <div class="footer-widget">
                         <h2 class="footer-widget-title">Рабочие часы</h2>
                         <div class="business-hours">
@@ -25,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg col-md-6">
                     <div class="footer-widget">
                         <h2 class="footer-widget-title">Контактная информация</h2>
                         <div class="contact-info">
@@ -37,51 +43,8 @@
                                     href="#">почта@gmail.com</a></span>
                         </div>
                     </div>
-                </div><!-- .col -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-widget">
-                        <h2 class="footer-widget-title">Recent Project</h2>
-                        <div class="recent-project row">
-                            <div class="col-4">
-                                <a href="#" class="zoom-effect">
-                                    <div class="zoom-effect-in"><img src="" alt="Image">
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" class="zoom-effect">
-                                    <div class="zoom-effect-in"><img src="" alt="Image">
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" class="zoom-effect">
-                                    <div class="zoom-effect-in"><img src="" alt="Image">
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" class="zoom-effect">
-                                    <div class="zoom-effect-in"><img src="" alt="Image">
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" class="zoom-effect">
-                                    <div class="zoom-effect-in"><img src="" alt="Image">
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" class="zoom-effect">
-                                    <div class="zoom-effect-in"><img src="" alt="Image">
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div><!-- .row -->
+            </div>
         </div>
     </div>
     <div class="container">

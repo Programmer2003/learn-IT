@@ -6,7 +6,7 @@
 
 @section('content')
     <!-- Start Hero Section -->
-    <section class="other-hero bg-img" data-src="img/other-hero-bg.jpg">
+    <section class="other-hero bg-img" data-src="https://www.practiceplan.co.uk/wp-content/uploads/2020/07/How-to-create-a-training-team.jpg">
         <div class="container other-hero-text">
             <h1>{{ $topic->name }}</h1>
             <ul class="breadcrumb">

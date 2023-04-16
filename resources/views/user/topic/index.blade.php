@@ -6,7 +6,7 @@
 
 @section('content')
     <!-- Start Hero Section -->
-    <section class="other-hero bg-img" data-src="img/other-hero-bg.jpg">
+    <section class="other-hero bg-img" data-src="https://www.incimages.com/uploaded_files/image/1920x1080/getty_933383882_2000133420009280345_410292.jpg">
         <div class="container other-hero-text">
             <h1>{{ $topic->name }}</h1>
             <ul class="breadcrumb">
@@ -43,7 +43,7 @@
                     @include('user.topic.test.index',compact('topic'))
                 </div>
                 <div id="check-list" class="tab-pane fade "><br>
-                    @include('user.checklist')
+                    @include('user.checklist-table')
                 </div>
             </div>
         </div>
@@ -243,40 +243,9 @@
             toastr.info("{!! Session::get('info') !!}");
         </script>
     @endif
+    <script src="{{ asset('js/timer.js') }}"></script>
     <script>
         let countdownfunction;
         timer();
-
-        function timer() {
-            var countDownDate = new Date();
-            var seconds = parseInt(document.getElementById('timerDate').value || -1);
-            countDownDate = countDownDate.setSeconds(countDownDate.getSeconds() +
-                seconds);
-
-            // Update the count down every 1 second
-            countdownfunction = setInterval(function() {
-                var now = new Date().getTime();
-                var distance = countDownDate - now;
-
-                // Time calculations for days, hours, minutes and seconds
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (
-                    1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Output the result in an element with id="demo"
-                document.getElementById("timer").innerHTML = minutes +
-                    "m " + seconds + "s ";
-                // If the count down is over, write some text 
-                if (distance < 0) {
-                    clearInterval(countdownfunction);
-
-                    document.getElementById("timer").innerHTML = "0m 0s";
-                    document.getElementById("timer").style.color = 'red';
-                }
-                else{
-                    document.getElementById("timer").style.color = 'green';
-                }
-            }, 1000);
-        }
     </script>
 @endpush

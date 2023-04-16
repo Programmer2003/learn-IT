@@ -14,7 +14,13 @@ class Topic extends Model
     public function getTask($task_number)
     {
         if ($task_number < 1 || $task_number > 3) {
-            return false;
+            return (object) array(
+                'url' => '',
+                'text' => '',
+                'type' => '',
+                'choises' => '',
+                'answer' => '',
+            );
         }
         $task = json_decode($this->tasks)[$task_number - 1];
         $answer = json_decode($this->answers)[$task_number - 1];
@@ -93,7 +99,7 @@ class Topic extends Model
     public function getHelpTestTask(){
         return json_decode($this->test_help_t_questions);
     }
-    
+
     public function getHelpTestTaskAnswers(){
         return json_decode($this->test_help_t_answers);
     }

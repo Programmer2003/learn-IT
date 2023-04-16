@@ -41,6 +41,8 @@
 
         @include('partials.footer')
     </div>
+    {{-- <!-- Scroll Up Button -->
+    <span class='scrollup' id="scrollup"></span> --}}
 
     <!-- Scripts -->
     <script src="{{ asset('js/vendor/modernizr-3.6.0.min.js') }}"></script>

@@ -79,11 +79,13 @@ Route::middleware(['is_admin'])->group(function () {
     });
 });
 
-Route::post('/homework', [UserController::class, 'homework'])->name('homework');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('profile', [UserController::class, 'index'])->name('profile');
     Route::get('course', [UserController::class, 'course'])->name('course');
+    Route::get('checklist', [UserController::class, 'checklist'])->name('checklist');
+    Route::post('homework', [UserController::class, 'homework'])->name('homework');
+    Route::post('mode', [UserController::class, 'mode'])->name('mode');
 
     Route::prefix('{topic:slug}')->group(function () {
         Route::get('', [TopicController::class, 'index'])->name('topic')->middleware('topic_access');

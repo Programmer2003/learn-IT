@@ -78,7 +78,7 @@
       $('.bg-img').each(function() {
         var src = $(this).attr('data-src');
         $(this).css({
-          'background-image': 'url(' + src + ')'
+          'background-image': 'linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url(' + src + ')'
         });
       });
 

@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <section class="other-hero bg-img" data-src="img/other-hero-bg.jpg">
+    <section class="other-hero bg-img" data-src="https://en.tums.ac.ir/images/medicine/en/pageBuilder/editor/2021/1631697132-course-after-mba.png">
         <div class="container other-hero-text">
             <h1>Курс</h1>
             <ul class="breadcrumb">

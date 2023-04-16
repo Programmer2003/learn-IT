@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -72,6 +73,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'code' => $data['code'],
             'mode' => $data['mode'],
+            'end_at' => $data['mode'] == 0 ? Carbon::now()->addDays(90) : Carbon::now()->addDays(45),
         ]);
     }
 

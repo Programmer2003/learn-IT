@@ -1,5 +1,5 @@
 <div class="single-service-details">
-    <div class="service-details-wrap">
+    <div class="service-details-wrap d-flex align-items-center flex-column">
         <div>
             <h2 class="service-entry-title">Итоговый Тест</h2>
         </div>

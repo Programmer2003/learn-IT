@@ -49,6 +49,9 @@
                                 <a class="dropdown-item" href="{{ route('course') }}">
                                     {{ __('Course') }}
                                 </a>
+                                <a class="dropdown-item" href="{{ route('checklist') }}">
+                                    {{ __('Checklist') }}
+                                </a>
                             @endadmin
 
                             <a class="dropdown-item" href="{{ route('logout') }}"

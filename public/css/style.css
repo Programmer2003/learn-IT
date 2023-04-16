@@ -1546,6 +1546,7 @@ hr {
 }
 
 .bg-img {
+  
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -3745,10 +3746,10 @@ blockquote small {
 }
 
 .breadcrumb>li+li:before {
-  content: "⇒";
+  content: "\f101";
   padding: 0 8px;
   font-size: 17px;
-  color: #ccc;
+  color: #FFFFFF;
   font-family: 'FontAwesome';
 }
 
