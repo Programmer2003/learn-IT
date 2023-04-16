@@ -23,7 +23,22 @@ class Progress extends Model
         if(!$this->task_end_at){
             return -1;
         }
+
         $diff =  $now->diffInSeconds($this->task_end_at, false);
+        if ($diff <= 0) {
+            return -1;
+        }
+
+        return $diff;
+    }
+
+    public function getTestTimer(){
+        $now = Carbon::now();
+        if(!$this->test_end_at){
+            return -1;
+        }
+
+        $diff =  $now->diffInSeconds($this->test_end_at, false);
         if ($diff <= 0) {
             return -1;
         }

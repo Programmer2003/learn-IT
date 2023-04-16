@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('url');
             $table->text('homework')->nullable();
             $table->text('homework_img')->nullable();
-            $table->text('lecture_text')->default('Пока нет текста');
+            $table->text('lecture_text')->default('');
             $table->text('lecture_link')->nullable();
             $table->text('lecture_meet_link')->nullable();
             $table->text('tasks')->nullable();

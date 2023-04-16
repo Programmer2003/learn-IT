@@ -70,7 +70,7 @@ Route::middleware(['is_admin'])->group(function () {
             Route::post('uploaded', [AdminController::class, 'homeworkUploaded'])->name('homework.uploaded');
             Route::post('update', [AdminController::class, 'homeworkUpdate'])->name('homework.update');
         });
-        
+
         // Route::post('homework/download', [AdminController::class, 'downloadHomework'])->name('homework.download');
         // Route::post('homework/uploaded', [AdminController::class, 'homeworkUploaded'])->name('homework.uploaded');
         // Route::post('homework/update', [AdminController::class, 'homeworkUpdate'])->name('homework.update');
@@ -87,8 +87,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('{topic:slug}')->group(function () {
         Route::get('', [TopicController::class, 'index'])->name('topic')->middleware('topic_access');
-        Route::get('test', [TestController::class, 'index'])->name('topic.test')->middleware('test_access');
-        Route::post('test/check', [TestController::class, 'check'])->name('test.check');
+
+        Route::prefix('test')->group(function () {
+            Route::get('', [TestController::class, 'index'])->name('topic.test')->middleware('test_access');
+            Route::post('check', [TestController::class, 'check'])->name('test.check');
+            Route::get('end', [TestController::class, 'end'])->name('test.end');
+        });
+
+
 
         Route::prefix('test/help')->group(function () {
             Route::get('', [HelpController::class, 'index'])->name('test.help')->middleware('test_help_access');

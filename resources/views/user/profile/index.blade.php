@@ -48,14 +48,7 @@
                 <div class="col-md-4">
                     <div class="profile-work">
                         <p>Закрепленные темы</p>
-                        @if ($topics->count())
-                            @foreach ($topics as $topic)
-                                <a href="{{ route('topic', $topic) }}"> {{ $topic->name }}</a><br />
-                            @endforeach
-                        @else
-                            <a class="" href="{{route('course')}}">Начните учить!</a>
-                        @endif
-
+                        @include('user.profile.finished')
                     </div>
                 </div>
                 <div class="col-md-8">

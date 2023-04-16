@@ -20,7 +20,7 @@
         @include('user.topic.test.next-topic')
     @else
         @if ($status == -1)
-            <button class="t-btn">Перейти к следующей теме</button>
+            @include('user.topic.test.next-topic')
         @endif
         <form action="{{ route('test.check', $topic) }}" method="POST" class="p-3">
             @csrf

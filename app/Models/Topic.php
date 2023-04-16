@@ -93,6 +93,7 @@ class Topic extends Model
     public function getHelpTestTask(){
         return json_decode($this->test_help_t_questions);
     }
+    
     public function getHelpTestTaskAnswers(){
         return json_decode($this->test_help_t_answers);
     }

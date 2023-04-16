@@ -70,12 +70,12 @@ class TestController extends Controller
         if ($mistakes == 0) {
             $progress->update([
                 'test_points' => max($progress->points, $points),
-                'test_status' => -3,
+                'test_status' =>  -3,
             ]);
         } else if ($mistakes < 2) {
             $progress->update([
                 'test_points' => max($progress->points, $points),
-                'test_status' => -1,
+                'test_status' =>  min($progress->test_status, -1),
             ]);
         }
 
@@ -84,7 +84,7 @@ class TestController extends Controller
             if ($progress->test_points > 0) {
                 $progress->update([
                     'test_points' => max($progress->points, $points),
-                    'test_status' => $mistakes == 0 ? -3 : -2,
+                    'test_status' => $mistakes == 0 ? -3 : min($progress->test_status, -2),
                 ]);
             } else {
                 if ($progress->test_status == 2) {
@@ -124,7 +124,29 @@ class TestController extends Controller
         return back()->with('info', $info);
     }
 
-    public function end(){
-        dd(1);
+    public function end(Topic $topic)
+    {
+        $user = User::find(auth()->user()->id);
+        $progress = Progress::where('user_id', $user->id)->where('topic_id', $topic->id)->first();
+
+        if ($progress->test_status == -5 || $progress->test_status >= 0) {
+            return redirect(route('course'));
+        }
+
+        $progress->update([
+            'test_status' => -5,
+        ]);
+
+        $user->update([
+            'points' => $user->points + $progress->test_points,
+            'topic' => $topic->id + 1,
+        ]);
+        $next_record = Topic::where('id', '>', $topic->id)->orderBy('id')->first();
+
+        if (!$next_record) {
+            return redirect(route('profile'));
+        }
+
+        return redirect(route('topic', $next_record));
     }
 }

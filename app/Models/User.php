@@ -140,4 +140,8 @@ class User extends Authenticatable
         return $this->belongsTo(Topic::class);
     }
 
+    public function finishedTopics(){
+        $topics = Topic::where('id', '<', $this->topic)->get();
+        return $topics;
+    }
 }
